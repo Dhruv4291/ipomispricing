@@ -1,0 +1,16 @@
+data = read.csv('fim data.csv')
+#linear regression
+model1 = lm(MISPRICING ~. - COMPANY,data = data)
+summary(model1)
+#rsquared = 0.55
+library(caret)
+
+fitControl <- trainControl(
+  method = "cv",
+  number = 3,
+  savePredictions = "final",
+  allowParallel = TRUE)
+
+xgbmodel = train(MISPRICING ~. - COMPANY,data =data[-1,],method = "gbm",trControl = fitControl,metric = "RMSE")
+plot(xgbmodel)
+#rsquared = 0.71
